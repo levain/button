@@ -1,0 +1,247 @@
+// button element defaults
+$button-font-size : 0.8em;
+$button-spacing-unit: 0.35em;
+$button-border-radius: 0;
+$button-bevel-depth : 0;
+
+// placeholders below
+
+%button-base {
+
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+  min-height: 1em;
+  outline: none;
+  border: none;
+  background-color: $alpha-color;
+  color: #fff;
+
+  padding: 0.8em 1.5em;
+  font-size: $button-font-size;
+  line-height: 1;
+  font-style: normal;
+  text-align: center;
+  text-decoration: none;
+  @if $global-border-box == true {
+    @include vendor(box-sizing, border-box);
+  }
+  @if $button-border-radius > 0 {
+    @include vendor(border-radius, $button-border-radius);
+  }
+
+  @if $button-bevel-depth > 0 {
+    @include vendor(box-shadow, 0em #{0-$button-bevel-depth} 0em rgba(0, 0, 0, 0.1) inset);
+  }
+
+  @include vendor(user-select, none );
+
+  @include vendor(transition, opacity 0.25s ease, background-color 0.25s ease, color 0.25s ease, background 0.25s ease, text-shadow 0.25s ease, box-shadow 0.25s ease);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+// Additional base styling to add icons and labels into a button
+%button-icon-label {
+  padding: $base-spacing-unit 40px $base-spacing-unit 40px;
+  position: relative;
+}
+
+//display block
+.d-b {
+  display: block;
+}
+//for a single standalone plain 'ol button
+.button {
+  @extend %button-base;
+
+  //Here our states lie
+  &:hover {
+    background-color: darken($alpha-color,6%);
+  }
+  &:focus {
+
+  }
+  &:active {
+
+  }
+}
+//This block-like element indicates that it contains more than one .button
+.buttons {
+  display: inline-block;
+  vertical-align: middle;
+
+  //Conditionals
+  .or,
+  .conditional {
+    position: relative;
+    float: left;
+    width: 0.3em;
+    height: 1em;
+    z-index: 3;
+    &:before {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      content: 'or';
+      background-color: #FFFFFF;
+      margin-top: -0.15em;
+      margin-left: -0.9em;
+      width: 1.8em;
+      height: 1.8em;
+      line-height: 1.66;
+      color: #AAAAAA;
+      font-style: normal;
+      font-weight: normal;
+      text-align: center;
+      @include vendor(box-shadow, 0px 2px 1px 0px rgba(0, 0, 0, 0.2) inset);
+      @include vendor(border-radius,500px);
+      @include vendor(box-sizing, border-box);
+    }
+    &:after {
+      position: absolute;
+      top: 0em;
+      left: 0em;
+      content: ' ';
+      width: 0.3em;
+      height: 1.8em;
+      background-color: transparent;
+      border-top: 0.6em solid #FFFFFF;
+      border-bottom: 0.6em solid #FFFFFF;
+    }
+  }
+}
+
+//this specifies a button that belongs within a group of .buttons
+.buttons__button {
+  @extend %button-base;
+}
+.buttons__button, .buttons .button {
+  margin: 0;
+  float:left;
+  border-left: 1px solid darken(#EBEBEB,8%);
+  @if $button-border-radius > 0 {
+    //@include vendor(border-radius, 0);
+  }
+  /*
+  &:first-of-type {
+    border-left: 0;
+    margin-left:0;
+    @if $button-border-radius > 0 {
+      @include vendor(border-radius, $button-border-radius 0 0 $button-border-radius);
+    }
+  }
+  &:last-of-type {
+    @if $button-border-radius > 0 {
+      @include vendor(border-radius, 0 $button-border-radius $button-border-radius 0);
+    }
+  }
+  */
+}
+.buttons--vertical {
+  vertical-align: middle;
+  display: inline-block;
+}
+.buttons__buttons {
+  float:left;
+}
+.buttons__buttons + .buttons__buttons {
+  margin-left: $button-spacing-unit;
+}
+.buttons--vertical__button,
+.buttons--vertical .button{
+  @extend %button-base;
+  display: block;
+  margin: 0;
+  border-bottom: 1px solid darken(#EBEBEB,8%);
+  width:100%;
+  @include vendor(border-radius,0);
+  @include vendor(box-shadow,none);
+}
+
+//If you want to make a button appear pushable
+.pushable { //utility class
+  position: relative;
+  &:active {
+    top:1px;
+    @if $button-bevel-depth > 0 {
+      @include vendor(box-shadow, 0em #{0-($button-bevel-depth/1.4)} 0em rgba(0, 0, 0, 0.1) inset);
+    }
+  }
+}
+
+//Variations for a .button containing an .icon
+.button--icon,
+.buttons--icon .button {
+  @extend %button-base;
+  padding: $button-spacing-unit; //even up that padding if just containing an .icon
+}
+
+//Now for those occassions when a .button has both an .icon and .label tucked away inside
+.button--icon--label,
+.buttons--icon--label .button
+
+ {
+  @extend .button--icon;
+  @extend %button-icon-label;
+  //style it up now child
+}
+
+//disabled button
+.button--disabled, .button[disabled] {
+  cursor: not-allowed;
+  background-color: $inactive-color;
+}
+
+// a button segment is full width and acts as a divider of content
+.button--segment {
+  width:100%;
+  border-top: 1px solid #686868;
+  @include vendor( border-radius, 0);
+  @include vendor( box-shadow, none );
+}
+
+// specific button instances
+.button--checkout {
+  @extend %button-base;
+  color: #fff;
+  background-color: $brand-color;
+  font-size: 20px;
+  font-weight:500;
+}
+.button--primary {
+  @extend  %button-base;
+  color: #fff;
+  background-color: $brand-color;
+
+}
+
+.button--plain {
+  @extend %button-base;
+  color: $brand-color;
+  background-color: transparent;
+  padding: 0;
+  @include vendor(box-shadow, none);
+
+}
+// Branded Buttons
+
+$button-brands : facebook,twitter,instagram,googleplus,tumblr,pinterest,linkedin;
+
+@each $brand in $button-brands {
+  $button-color : unquote('$#{$brand}-color');
+  .button--#{$brand} {
+    @extend %button-base;
+    @extend %button-icon-label;
+    @extend %palette-#{$brand};
+  }
+}
+
+// Header Buttons - fill the parent container fully
+.button--header {
+  @extend %button-base;
+  width: 100%;
+  padding: 0;
+  vertical-align: middle;
+  @include vendor(box-shadow,none);
+  @include vendor(border-radius,0);
+}
